@@ -4,15 +4,17 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { useTheme } from '../../context/ThemeContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/authSlice';
+import { toggleTheme } from '../../redux/themeSlice';
 
 export default function Navbar() {
-  const { darkMode, toggleTheme } = useTheme();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const darkMode = useSelector((state) => state.theme.darkMode);
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
     <nav className="bg-gray-100 dark:bg-gray-800 p-4 shadow-lg">
@@ -24,14 +26,22 @@ export default function Navbar() {
 
         {/* Links and Theme Toggle for larger screens */}
         <div className="hidden md:flex space-x-6 items-center">
-          <Link className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300" href="/register">
-            Register
-          </Link>
-          <Link className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300" href="/login">
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <button onClick={() => dispatch(logout())} className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300">
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300" href="/register">
+                Register
+              </Link>
+              <Link className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300" href="/login">
+                Login
+              </Link>
+            </>
+          )}
           {/* Toggle Dark Mode */}
-          <button onClick={toggleTheme} className="text-black dark:text-white focus:outline-none ml-4">
+          <button onClick={() => dispatch(toggleTheme())} className="text-black dark:text-white focus:outline-none ml-4">
             <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="w-5 h-5" />
           </button>
         </div>
@@ -49,14 +59,22 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden mt-2 space-y-2">
-          <Link className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600" href="/register">
-            Register
-          </Link>
-          <Link className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600" href="/login">
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <button onClick={() => dispatch(logout())} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600" href="/register">
+                Register
+              </Link>
+              <Link className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600" href="/login">
+                Login
+              </Link>
+            </>
+          )}
           {/* Toggle Dark Mode in Mobile */}
-          <button onClick={toggleTheme} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+          <button onClick={() => dispatch(toggleTheme())} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
             <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="w-5 h-5" />
           </button>
         </div>

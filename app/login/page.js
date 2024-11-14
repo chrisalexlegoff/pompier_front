@@ -1,12 +1,12 @@
 'use client';
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axiosConfig from '../api/axiosConfig';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/authSlice';
 
 const schema = yup.object().shape({
   username: yup.string().required('Username is required'),
@@ -15,7 +15,7 @@ const schema = yup.object().shape({
 
 export default function Login() {
   const router = useRouter();
-  const { login } = useAuth();
+  const dispatch = useDispatch(); // Utilisation de useDispatch pour Redux
   const {
     register,
     handleSubmit,
@@ -26,8 +26,9 @@ export default function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axiosConfig.post('/login_check', data); // Remplacez par votre URL d'API
-      login(response.data.token);
+      const response = await axiosConfig.post('/login_check', data);
+      dispatch(login()); // Met à jour l'état d'authentification dans Redux
+      localStorage.setItem('jwtToken', response.data.token); // Stocke le token si nécessaire
       alert('Connexion réussie !');
       router.push('/');
     } catch (error) {
