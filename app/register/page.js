@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axiosConfig from '../api/axiosConfig';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -18,6 +19,7 @@ const schema = yup.object().shape({
 
 export default function Register() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -28,7 +30,7 @@ export default function Register() {
 
   const onSubmit = async (data) => {
     try {
-      await axiosConfig.post('/register', data); // Remplacez par votre URL d'API
+      await axiosConfig.post('/register', data);
       alert('Inscription réussie ! Veuillez vous connecter.');
       router.push('/login');
     } catch (error) {
@@ -54,7 +56,7 @@ export default function Register() {
           {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
         </div>
         <button type="submit" className="btn-primary">
-          Go
+          valider
         </button>
       </form>
     </div>
