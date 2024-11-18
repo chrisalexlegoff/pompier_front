@@ -27,8 +27,8 @@ export default function Login() {
   const onSubmit = async (data) => {
     try {
       const response = await axiosConfig.post('/login_check', data);
-      dispatch(login()); // Met à jour l'état d'authentification dans Redux
-      localStorage.setItem('jwtToken', response.data.token); // Stocke le token si nécessaire
+      localStorage.setItem('user', JSON.stringify({ ...response.data }));
+      dispatch(login({ user: { ...response.data } })); // Met à jour l'état d'authentification dans Redux
       alert('Connexion réussie !');
       router.push('/');
     } catch (error) {

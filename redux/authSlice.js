@@ -4,14 +4,17 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     isAuthenticated: false,
+    user: {},
   },
   reducers: {
-    login: (state) => {
+    login: (state, action) => {
       state.isAuthenticated = true;
+      state.user = action.payload.user;
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      localStorage.removeItem('jwtToken');
+      state.user = {};
+      localStorage.removeItem('user');
     },
     setAuth: (state, action) => {
       state.isAuthenticated = action.payload;
