@@ -10,7 +10,7 @@ import { setTheme } from '../redux/themeSlice';
 export default function RootLayout({ children }) {
   // Initialiser l'état du thème et de l'authentification à partir du localStorage
   useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
+    const token = JSON.parse(localStorage.getItem('user'))?.token;
     store.dispatch(setAuth(!!token));
 
     const savedTheme = localStorage.getItem('darkMode') === 'true';
