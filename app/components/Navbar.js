@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/authSlice';
+import axiosConfig from '../api/axiosConfig';
 import { toggleTheme } from '../../redux/themeSlice';
 
 export default function Navbar() {
@@ -13,8 +14,36 @@ export default function Navbar() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const darkMode = useSelector((state) => state.theme.darkMode);
   const [isOpen, setIsOpen] = useState(false);
+  const apiLogout = async () => {
+    console.log('test');
+    try {
+      console.log(JSON.parse(localStorage.getItem('user')).token);
+      // Envoyer la requête POST à l'API Symfony
+      const response = await axiosConfig.post(
+        '/logout',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('user')).token}`,
+          },
+        }
+      );
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+      if (response.status === 200) {
+        // Supprimer le token côté client
+        localStorage.removeItem('user');
+        dispatch(logout());
+        alert('Déconnexion réussie !');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+      alert('Erreur lors de la déconnexion');
+    }
+  };
+
+  function toggleMenu() {
+    return setIsOpen(!isOpen);
+  }
 
   return (
     <nav className="bg-gray-100 dark:bg-gray-800 p-4 shadow-lg">
@@ -27,7 +56,7 @@ export default function Navbar() {
         {/* Links and Theme Toggle for larger screens */}
         <div className="hidden md:flex space-x-6 items-center">
           {isAuthenticated ? (
-            <button onClick={() => dispatch(logout())} className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300">
+            <button onClick={(e) => apiLogout(e)} className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300">
               Logout
             </button>
           ) : (
@@ -60,7 +89,7 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden mt-2 space-y-2">
           {isAuthenticated ? (
-            <button onClick={() => dispatch(logout())} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
+            <button onClick={() => apiLogout()} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
               Logout
             </button>
           ) : (
