@@ -26,6 +26,11 @@ export default function Navbar() {
 
         {/* Links and Theme Toggle for larger screens */}
         <div className="hidden md:flex space-x-6 items-center">
+          {/* Link to produits */}
+          <Link className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300" href="/produits">
+            produits
+          </Link>
+
           {isAuthenticated ? (
             <button onClick={() => dispatch(logout())} className="text-black dark:text-white hover:text-gray-600 dark:hover:text-gray-300">
               Logout
@@ -40,6 +45,7 @@ export default function Navbar() {
               </Link>
             </>
           )}
+
           {/* Toggle Dark Mode */}
           <button onClick={() => dispatch(toggleTheme())} className="text-black dark:text-white focus:outline-none ml-4">
             <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="w-5 h-5" />
@@ -59,6 +65,11 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden mt-2 space-y-2">
+          {/* Link to produits */}
+          <Link className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600" href="/produits">
+            produits
+          </Link>
+
           {isAuthenticated ? (
             <button onClick={() => dispatch(logout())} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
               Logout
@@ -73,6 +84,7 @@ export default function Navbar() {
               </Link>
             </>
           )}
+
           {/* Toggle Dark Mode in Mobile */}
           <button onClick={() => dispatch(toggleTheme())} className="block text-black dark:text-white bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded hover:bg-gray-300 dark:hover:bg-gray-600">
             <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="w-5 h-5" />
