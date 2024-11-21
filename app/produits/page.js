@@ -13,6 +13,7 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`);
+        console.log(response.data.member);
         setProducts(response.data.member);
       } catch (error) {
         console.error('Erreur lors de la récupération des produits :', error);
@@ -50,7 +51,7 @@ export default function ProductsPage() {
             <div className="p-4">
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{product.name}</h2>
               <p className="text-gray-600 dark:text-gray-400">Prix : {product.unitaryPrice} €</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Catégorie : {product.productCat?.replace('/api/product_cats/', '') || 'Non définie'}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Catégorie : {product.name || 'Non définie'}</p>
             </div>
           </div>
         ))}
