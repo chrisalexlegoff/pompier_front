@@ -90,7 +90,7 @@ export default function Register() {
           {errors.identifiant && <p className="text-red-500 text-xs">{errors.identifiant.message}</p>}
         </div>
         <div className="mb-4">
-          <input {...register('matricule')} placeholder="Matricule" className="input-field" />
+          <input {...register('matricule')} placeholder="Matricule" className="input-field" autoComplete="new-matricule" />
           {matriculeError && <p className="text-red-500 text-xs">{matriculeError}</p>}
         </div>
         <div className="mb-4">
