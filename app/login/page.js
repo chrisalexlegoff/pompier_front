@@ -42,11 +42,11 @@ export default function Login() {
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-gray-800 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center text-black dark:text-white">Connexion</h2>
         <div className="mb-4">
-          <input {...register('username')} placeholder="Nom d'utilisateur" className="input-field" />
+          <input {...register('username')} placeholder="Nom d'utilisateur" className="input-field" autoComplete="username" />
           {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
         </div>
         <div className="mb-6">
-          <input {...register('password')} placeholder="Mot de passe" type="password" className="input-field" />
+          <input {...register('password')} placeholder="Mot de passe" type="password" className="input-field" autoComplete="current-password" />
           {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
         </div>
         <button type="submit" className="btn-primary">
